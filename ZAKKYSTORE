@@ -1,0 +1,95 @@
+local player = game.Players.LocalPlayer
+local TweenService = game:GetService("TweenService")
+
+-- koordinat
+local npc = Vector3.new(523,3,615)
+local apt1 = Vector3.new(1202,3,-182)
+
+-- cari kursi kendaraan
+local function getSeat()
+
+    local char = player.Character
+    if not char then return end
+
+    local humanoid = char:FindFirstChildOfClass("Humanoid")
+
+    if humanoid and humanoid.SeatPart then
+        return humanoid.SeatPart
+    end
+
+end
+
+-- teleport kendaraan
+local function teleport(pos)
+
+    local seat = getSeat()
+
+    if seat then
+
+        local vehicle = seat.Parent
+
+        for _,part in pairs(vehicle:GetDescendants()) do
+            if part:IsA("BasePart") then
+
+                local tween = TweenService:Create(
+                    part,
+                    TweenInfo.new(2, Enum.EasingStyle.Linear),
+                    {CFrame = part.CFrame + (pos - seat.Position)}
+                )
+
+                tween:Play()
+
+            end
+        end
+
+    end
+
+end
+
+-- GUI
+local gui = Instance.new("ScreenGui", player.PlayerGui)
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0,260,0,330)
+frame.Position = UDim2.new(0.02,0,0.35,0)
+frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
+frame.Active = true
+frame.Draggable = true
+frame.Parent = gui
+
+local title = Instance.new("TextLabel")
+title.Parent = frame
+title.Size = UDim2.new(1,0,0,35)
+title.BackgroundTransparency = 1
+title.Text = "ZAKKYSTORE"
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 18
+
+-- TELEPORT NPC
+local btnNPC = Instance.new("TextButton")
+btnNPC.Parent = frame
+btnNPC.Size = UDim2.new(0.9,0,0,30)
+btnNPC.Position = UDim2.new(0.05,0,0,200)
+btnNPC.BackgroundColor3 = Color3.fromRGB(60,60,60)
+btnNPC.TextColor3 = Color3.fromRGB(255,255,255)
+btnNPC.Text = "TELEPORT NPC"
+
+-- TELEPORT APT 1
+local btnAPT = Instance.new("TextButton")
+btnAPT.Parent = frame
+btnAPT.Size = UDim2.new(0.9,0,0,30)
+btnAPT.Position = UDim2.new(0.05,0,0,240)
+btnAPT.BackgroundColor3 = Color3.fromRGB(60,60,60)
+btnAPT.TextColor3 = Color3.fromRGB(255,255,255)
+btnAPT.Text = "TELEPORT APT 1"
+
+-- fungsi tombol
+btnNPC.MouseButton1Click:Connect(function()
+    teleport(npc)
+end)
+
+btnAPT.MouseButton1Click:Connect(function()
+    teleport(apt1)
+end)
+
