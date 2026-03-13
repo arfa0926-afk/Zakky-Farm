@@ -209,7 +209,7 @@ local function autoCook()
 		equipTool("Water")
 		pressE()
 
-		task.wait(21)
+		task.wait(30)
 
 		equipTool("Sugar Block Bag")
 		pressE()
@@ -219,7 +219,7 @@ local function autoCook()
 		equipTool("Gelatin")
 		pressE()
 
-		task.wait(46)
+		task.wait(50)
 
 		equipTool("Empty Bag")
 
