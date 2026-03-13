@@ -1,0 +1,124 @@
+local player = game.Players.LocalPlayer
+local TweenService = game:GetService("TweenService")
+
+-- koordinat
+local npc = Vector3.new(523,3,615)
+local apt1 = Vector3.new(1202,3,-182)
+
+-- cari kursi kendaraan
+local function getSeat()
+local char = player.Character
+if not char then return end
+local humanoid = char:FindFirstChildOfClass("Humanoid")
+if humanoid and humanoid.SeatPart then
+return humanoid.SeatPart
+end
+end
+
+-- teleport kendaraan
+local function teleport(pos)
+local seat = getSeat()
+if seat then
+local vehicle = seat.Parent
+for _,part in pairs(vehicle:GetDescendants()) do
+if part:IsA("BasePart") then
+local tween = TweenService:Create(
+part,
+TweenInfo.new(2, Enum.EasingStyle.Linear),
+{CFrame = part.CFrame + (pos - seat.Position)}
+)
+tween:Play()
+end
+end
+end
+end
+
+-- GUI
+local gui = Instance.new("ScreenGui",player.PlayerGui)
+
+local frame = Instance.new("Frame")
+frame.Parent = gui
+frame.Size = UDim2.new(0,260,0,320)
+frame.Position = UDim2.new(0.02,0,0.3,0)
+frame.BackgroundColor3 = Color3.fromRGB(25,25,25)
+frame.BorderColor3 = Color3.fromRGB(200,0,255)
+frame.BorderSizePixel = 3
+frame.Active = true
+frame.Draggable = true
+
+-- title
+local title = Instance.new("TextLabel")
+title.Parent = frame
+title.Size = UDim2.new(1,0,0,30)
+title.BackgroundTransparency = 1
+title.Text = "ZAKKYSTORE"
+title.Font = Enum.Font.GothamBold
+title.TextColor3 = Color3.new(1,1,1)
+title.TextSize = 18
+
+-- tab
+local farmTab = Instance.new("TextButton")
+farmTab.Parent = frame
+farmTab.Size = UDim2.new(0.45,0,0,25)
+farmTab.Position = UDim2.new(0.05,0,0,35)
+farmTab.Text = "FARM"
+
+local statusTab = Instance.new("TextButton")
+statusTab.Parent = frame
+statusTab.Size = UDim2.new(0.45,0,0,25)
+statusTab.Position = UDim2.new(0.5,0,0,35)
+statusTab.Text = "STATUS"
+
+-- item text
+local water = Instance.new("TextLabel")
+water.Parent = frame
+water.Position = UDim2.new(0.05,0,0,70)
+water.Size = UDim2.new(0.9,0,0,20)
+water.BackgroundTransparency = 1
+water.Text = "💧 Water: 0"
+water.TextColor3 = Color3.new(1,1,1)
+water.TextXAlignment = Enum.TextXAlignment.Left
+
+local sugar = water:Clone()
+sugar.Parent = frame
+sugar.Position = UDim2.new(0.05,0,0,90)
+sugar.Text = "🍬 Sugar: 0"
+
+local gelatin = water:Clone()
+gelatin.Parent = frame
+gelatin.Position = UDim2.new(0.05,0,0,110)
+gelatin.Text = "🟡 Gelatin: 0"
+
+local bag = water:Clone()
+bag.Parent = frame
+bag.Position = UDim2.new(0.05,0,0,130)
+bag.Text = "👜 Bag: 0"
+
+-- function buat tombol
+local function makeButton(text,y)
+local b = Instance.new("TextButton")
+b.Parent = frame
+b.Size = UDim2.new(0.9,0,0,30)
+b.Position = UDim2.new(0.05,0,0,y)
+b.BackgroundColor3 = Color3.fromRGB(60,60,60)
+b.TextColor3 = Color3.new(1,1,1)
+b.Font = Enum.Font.Gotham
+b.Text = text
+return b
+end
+
+local autoFarm = makeButton("AUTO FARM",160)
+local autoSell = makeButton("AUTO SELL : OFF",195)
+local tpNPC = makeButton("TELEPORT NPC",230)
+local tpAPT = makeButton("TELEPORT APT 1",265)
+local autoBuy = makeButton("AUTO BUY",300)
+
+-- teleport buttons
+tpNPC.MouseButton1Click:Connect(function()
+teleport(npc)
+end)
+
+tpAPT.MouseButton1Click:Connect(function()
+teleport(apt1)
+end)
+
