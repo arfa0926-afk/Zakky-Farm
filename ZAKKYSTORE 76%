@@ -1,0 +1,419 @@
+local player = game.Players.LocalPlayer
+local backpack = player:WaitForChild("Backpack")
+local vim = game:GetService("VirtualInputManager")
+
+local gui = Instance.new("ScreenGui")
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Parent = gui
+frame.Size = UDim2.new(0,260,0,330)
+frame.Position = UDim2.new(0.5,-130,0.5,-165)
+frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
+frame.BorderSizePixel = 3
+frame.BorderColor3 = Color3.fromRGB(200,0,255)
+frame.Active = true
+frame.Draggable = true
+
+local title = Instance.new("TextLabel")
+title.Parent = frame
+title.Size = UDim2.new(1,0,0,35)
+title.BackgroundTransparency = 1
+title.Text = "ZAKKYSTORE"
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 18
+
+local function makeButton(text,y)
+local btn = Instance.new("TextButton")
+btn.Parent = frame
+btn.Size = UDim2.new(0.9,0,0,30)
+btn.Position = UDim2.new(0.05,0,0,y)
+btn.BackgroundColor3 = Color3.fromRGB(60,60,60)
+btn.TextColor3 = Color3.fromRGB(255,255,255)
+btn.Text = text
+btn.Font = Enum.Font.Gotham
+btn.TextSize = 14
+return btn
+end
+
+local water = Instance.new("TextLabel")
+water.Parent = frame
+water.Position = UDim2.new(0.05,0,0,45)
+water.Size = UDim2.new(0.9,0,0,20)
+water.BackgroundTransparency = 1
+water.Text = "💧 Water: 0"
+water.TextColor3 = Color3.new(1,1,1)
+water.Font = Enum.Font.Gotham
+water.TextSize = 14
+water.TextXAlignment = Enum.TextXAlignment.Left
+
+local sugar = water:Clone()
+sugar.Parent = frame
+sugar.Position = UDim2.new(0.05,0,0,65)
+sugar.Text = "🍬 Sugar: 0"
+
+local gelatin = water:Clone()
+gelatin.Parent = frame
+gelatin.Position = UDim2.new(0.05,0,0,85)
+gelatin.Text = "🟡 Gelatin: 0"
+
+local MarshmallowBag = water:Clone()
+MarshmallowBag.Parent = frame
+MarshmallowBag.Position = UDim2.new(0.05,0,0,105)
+MarshmallowBag.Text = "👜 Marshmallow Bag: 0"
+
+local autoFarm = makeButton("AUTO FARM : OFF",135)
+local autoSell = makeButton("AUTO SELL : OFF",170)
+local tpNPC = makeButton("TELEPORT NPC",205)
+local tpAPT1 = makeButton("TELEPORT APT 1",240)
+local autoBuy = makeButton("AUTO BUY",275)
+
+-- tombol kecil (icon buka GUI)
+
+local openButton = Instance.new("TextButton")
+openButton.Parent = gui
+openButton.Size = UDim2.new(0,50,0,50)
+openButton.Position = UDim2.new(0,10,0.5,0)
+openButton.BackgroundColor3 = Color3.fromRGB(40,40,40)
+openButton.Text = "Z"
+openButton.TextColor3 = Color3.new(1,1,1)
+openButton.Font = Enum.Font.GothamBold
+openButton.TextSize = 20
+openButton.Active = true
+openButton.Draggable = true
+
+
+-- toggle GUI
+openButton.MouseButton1Click:Connect(function()
+
+	if frame.Visible == true then
+		frame.Visible = false
+	else
+		frame.Visible = true
+	end
+
+end)
+
+-- ======================
+-- AUTO BUY SYSTEM
+-- ======================
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local storeRemote = ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("StorePurchase")
+
+local buying = false
+
+local function autoBuyFunc()
+
+    while buying do
+
+        storeRemote:FireServer("Water")
+        task.wait(0.6)
+
+        storeRemote:FireServer("Sugar Block Bag")
+        task.wait(0.6)
+
+        storeRemote:FireServer("Gelatin")
+        task.wait(0.6)
+
+    end
+
+end
+
+autoBuy.MouseButton1Click:Connect(function()
+
+    buying = not buying
+
+    if buying then
+        autoBuy.Text = "AUTO BUY : ON"
+        task.spawn(autoBuyFunc)
+    else
+        autoBuy.Text = "AUTO BUY : OFF"
+    end
+
+end)
+
+local close = Instance.new("TextButton")
+close.Parent = frame
+close.Size = UDim2.new(0,25,0,25)
+close.Position = UDim2.new(1,-30,0,5)
+close.Text = "X"
+close.BackgroundColor3 = Color3.fromRGB(200,0,0)
+close.TextColor3 = Color3.new(1,1,1)
+
+close.MouseButton1Click:Connect(function()
+frame.Visible = false
+end)
+
+
+-- ======================
+-- AUTO COOK SYSTEM
+-- ======================
+
+local running = false
+
+local function pressE()
+    vim:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+    task.wait(0.1)
+    vim:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+end
+
+local function equipTool(name)
+    local tool = backpack:FindFirstChild(name)
+    if tool then
+        player.Character.Humanoid:EquipTool(tool)
+        task.wait(0.4)
+    end
+end
+
+local function autoCook()
+
+    while running do
+        
+        if not running then break end
+        equipTool("Water")
+        pressE()
+        
+    for i = 1,21 do
+        if not running then return end
+        task.wait(1)
+    end
+       
+        if not running then break end
+        equipTool("Sugar Block Bag")
+        pressE()
+
+        task.wait(1)
+        if not running then break end
+        
+        equipTool("Gelatin")
+        pressE()
+        
+        for i = 1,46 do
+            if not running then return end
+            task.wait(1)
+        end
+
+        if not running then break end
+        equipTool("Empty Bag")
+        pressE() 
+        
+        task.wait(2) 
+        
+        print("Marshmallow selesai")
+
+    end
+
+end
+
+-- tombol auto farm
+autoFarm.MouseButton1Click:Connect(function()
+
+    running = not running
+
+    if running then
+        autoFarm.Text = "AUTO FARM : ON"
+        task.spawn(autoCook)
+    else
+        autoFarm.Text = "AUTO FARM : OFF"
+    end
+
+end)
+
+
+-- ======================
+-- TELEPORT SYSTEM
+-- ======================
+
+local TweenService = game:GetService("TweenService")
+
+-- lokasi tujuan
+local NPC = Vector3.new(523,3,615)
+local APT1 = Vector3.new(1202,3,-182)
+
+-- cari kendaraan yang sedang dinaiki
+local function getSeat()
+
+    local char = player.Character
+    if not char then return end
+
+    local humanoid = char:FindFirstChildOfClass("Humanoid")
+
+    if humanoid and humanoid.SeatPart then
+        return humanoid.SeatPart
+    end
+
+end
+
+-- teleport kendaraan
+local function teleport(pos)
+
+    local seat = getSeat()
+
+    if seat then
+
+        local vehicle = seat.Parent
+
+        for _,part in pairs(vehicle:GetDescendants()) do
+            if part:IsA("BasePart") then
+
+                local tween = TweenService:Create(
+                    part,
+                    TweenInfo.new(2, Enum.EasingStyle.Linear),
+                    {CFrame = part.CFrame + (pos - seat.Position)}
+                )
+
+                tween:Play()
+
+            end
+        end
+
+    end
+
+end
+
+
+-- ======================
+-- HUBUNGKAN KE TOMBOL GUI
+-- ======================
+
+tpNPC.MouseButton1Click:Connect(function()
+    teleport(NPC)
+end)
+
+tpAPT1.MouseButton1Click:Connect(function()
+    teleport(APT1)
+end)
+
+-- ======================
+-- COUNT ITEM
+-- ======================
+
+local function countItem(name)
+
+	local amount = 0
+
+	local function check(container)
+		for _,v in pairs(container:GetChildren()) do
+			
+			-- khusus Marshmallow Bag
+			if name == "Marshmallow Bag" then
+				if string.find(v.Name,"Marshmallow Bag") then
+					amount += 1
+				end
+			
+			-- item biasa
+			else
+				if v.Name == name then
+					amount += 1
+				end
+			end
+			
+		end
+	end
+
+	check(backpack)
+
+	if player.Character then
+		check(player.Character)
+	end
+
+	return amount
+
+end
+
+-- ======================
+-- UPDATE GUI ITEM
+-- ======================
+
+task.spawn(function()
+
+	while true do
+
+		water.Text = "💧 Water: "..countItem("Water")
+		sugar.Text = "🍬 Sugar: "..countItem("Sugar Block Bag")
+		gelatin.Text = "🟡 Gelatin: "..countItem("Gelatin")
+		MarshmallowBag.Text = "👜 Marshmallow Bag: "..countItem("Marshmallow Bag")
+
+		task.wait(1)
+
+	end
+
+end)
+
+-- ======================
+-- AUTO SELL SYSTEM
+-- ======================
+
+local selling = false
+
+-- cari prompt Lamont Bell
+local function getSellPrompt()
+
+    for _,v in pairs(workspace:GetDescendants()) do
+        
+        if v:IsA("ProximityPrompt") then
+            
+            if v.Parent and v.Parent.Parent and v.Parent.Parent.Name == "Lamont Bell" then
+                return v
+            end
+            
+        end
+        
+    end
+
+end
+
+-- cek marshmallow
+local function isMarshmallow(name)
+    return string.find(name,"Marshmallow Bag")
+end
+
+
+local function autoSellFunc()
+
+    local prompt = getSellPrompt()
+
+    while selling do
+
+        for _,tool in pairs(backpack:GetChildren()) do
+
+            if not selling then return end
+
+            if tool:IsA("Tool") and isMarshmallow(tool.Name) then
+
+                player.Character.Humanoid:EquipTool(tool)
+
+                task.wait(0.5)
+
+                if prompt then
+                    fireproximityprompt(prompt)
+                end
+
+                task.wait(1)
+
+            end
+
+        end
+
+        task.wait(1)
+
+    end
+
+end
+
+autoSell.MouseButton1Click:Connect(function()
+
+    selling = not selling
+
+    if selling then
+        autoSell.Text = "AUTO SELL : ON"
+        task.spawn(autoSellFunc)
+    else
+        autoSell.Text = "AUTO SELL : OFF"
+    end
+
+end)
+
+
