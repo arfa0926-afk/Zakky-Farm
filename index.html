@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SURXRAT v5.0 | REMOTE ADMINISTRATION TOOL</title>
+    <title>SURXRAT v5.0 | REAL REMOTE ACCESS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -26,7 +26,6 @@
             background-size: 20px 20px;
         }
 
-        /* SCAN LINE EFFECT */
         .scanline {
             position: fixed;
             top: 0;
@@ -49,7 +48,6 @@
             100% { transform: translateY(100%); }
         }
 
-        /* GLITCH EFFECT */
         .glitch {
             animation: glitch 1s linear infinite;
         }
@@ -60,14 +58,12 @@
             62%{ transform: translate(0,0) skew(5deg); }
         }
 
-        /* TERMINAL STYLE */
         .terminal-box {
             border: 2px solid #00FF00;
             background-color: #0a0a0a;
             box-shadow: 0 0 15px rgba(0,255,0,0.3), inset 0 0 15px rgba(0,255,0,0.1);
         }
 
-        /* BUTTON STYLE */
         .btn-surx {
             background-color: #111;
             border: 2px solid #00FF00;
@@ -83,7 +79,6 @@
             box-shadow: 0 0 10px #00FF00;
         }
 
-        /* INPUT STYLE */
         .input-surx {
             background-color: #111;
             border: 2px solid #00FF00;
@@ -95,7 +90,6 @@
             box-shadow: 0 0 10px #00FF00;
         }
 
-        /* BLINK TEXT */
         .blink {
             animation: blink 1s infinite;
         }
@@ -105,7 +99,6 @@
             51%, 100% { opacity: 0.3; }
         }
 
-        /* TAB CONTENT */
         .tab-content {
             display: none;
         }
@@ -120,15 +113,14 @@
             to { opacity: 1; }
         }
 
-        /* CAMERA VIEW */
-        #camView {
+        /* KAMERA REAL STREAM */
+        #realCam {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: none;
             transform: scaleX(-1);
-            filter: contrast(120%) brightness(90%) grayscale(10%);
-            border: 2px solid #00FF00;
+            filter: contrast(120%) brightness(95%);
         }
 
         .rec-dot {
@@ -152,14 +144,12 @@
 
     <div class="container mx-auto px-4 py-6 max-w-6xl">
         
-        <!-- HEADER -->
         <header class="text-center mb-8">
             <h1 class="text-6xl font-black glitch mb-2 text-red-600">SURXRAT <span class="text-green-500">v5.0</span></h1>
             <p class="text-lg text-green-400">ADVANCED REMOTE ADMINISTRATION TOOL</p>
-            <p class="text-sm mt-2">STATUS: <span class="text-green-500 font-bold blink">ONLINE</span> | ENCRYPTION: AES-256</p>
+            <p class="text-sm mt-2">STATUS: <span class="text-green-500 font-bold blink">ONLINE</span> | MODE: REAL CONNECTION</p>
         </header>
 
-        <!-- TARGET INFO -->
         <div class="terminal-box p-4 mb-6 rounded-lg">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
@@ -177,23 +167,21 @@
             </div>
         </div>
 
-        <!-- MAIN MENU TABS -->
         <div class="flex flex-wrap justify-center gap-2 mb-6">
             <button class="tab-btn btn-surx px-6 py-2 rounded active" data-tab="dashboard">DASHBOARD</button>
             <button class="tab-btn btn-surx px-6 py-2 rounded" data-tab="camera">CAMERA</button>
             <button class="tab-btn btn-surx px-6 py-2 rounded" data-tab="mic">MICROPHONE</button>
             <button class="tab-btn btn-surx px-6 py-2 rounded" data-tab="location">LOCATION</button>
-            <button class="tab-btn btn-surx px-6 py-2 rounded" data-tab="files">FILE MANAGER</button>
+            <button class="tab-btn btn-surx px-6 py-2 rounded" data-tab="files">FILES</button>
             <button class="tab-btn btn-surx px-6 py-2 rounded" data-tab="contacts">CONTACTS</button>
             <button class="tab-btn btn-surx px-6 py-2 rounded" data-tab="commands">COMMANDS</button>
         </div>
 
-        <!-- CONTENT AREA -->
         <div class="terminal-box p-6 rounded-lg min-h-[500px]">
             
-            <!-- DASHBOARD TAB -->
+            <!-- DASHBOARD - DATA REAL -->
             <div id="dashboard" class="tab-content active">
-                <h2 class="text-2xl font-bold mb-4 border-b border-green-600 pb-2">SYSTEM DASHBOARD</h2>
+                <h2 class="text-2xl font-bold mb-4 border-b border-green-600 pb-2">SYSTEM DASHBOARD <span class="text-red-500 text-sm">[REAL TIME DATA]</span></h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                     <div class="bg-black p-4 rounded text-center border border-green-700">
                         <i class="fas fa-microchip text-3xl mb-2"></i>
@@ -217,21 +205,21 @@
                     </div>
                 </div>
 
-                <h3 class="text-xl font-bold mb-3">DEVICE INFORMATION</h3>
+                <h3 class="text-xl font-bold mb-3">DEVICE INFORMATION <span class="text-red-500 text-sm">[FETCHED DATA]</span></h3>
                 <div class="bg-black p-4 rounded border border-green-700 text-sm space-y-2">
-                    <p>> DEVICE MODEL: <span id="devModel">UNKNOWN</span></p>
-                    <p>> ANDROID VERSION: <span id="androidVer">UNKNOWN</span></p>
+                    <p>> DEVICE MODEL: <span id="devModel">WAITING...</span></p>
+                    <p>> ANDROID VERSION: <span id="androidVer">WAITING...</span></p>
                     <p>> IMEI NUMBER: <span id="imeiNum">***************</span></p>
                     <p>> SERIAL NUMBER: <span id="serialNum">***************</span></p>
-                    <p>> SIM CARD: <span id="simCard">DETECTED</span></p>
+                    <p>> SIM CARD: <span id="simCard">DETECTING...</span></p>
                     <p>> LATITUDE: <span id="latVal">0.0000</span></p>
                     <p>> LONGITUDE: <span id="longVal">0.0000</span></p>
                 </div>
             </div>
 
-            <!-- CAMERA TAB -->
+            <!-- CAMERA TAB - STREAM REAL -->
             <div id="camera" class="tab-content">
-                <h2 class="text-2xl font-bold mb-4 border-b border-green-600 pb-2">CAMERA CONTROL</h2>
+                <h2 class="text-2xl font-bold mb-4 border-b border-green-600 pb-2">LIVE CAMERA FEED</h2>
                 
                 <div class="flex justify-center gap-4 mb-4">
                     <button class="btn-surx px-4 py-2 rounded" id="frontCamBtn"><i class="fas fa-user"></i> FRONT CAM</button>
@@ -240,29 +228,25 @@
                 </div>
 
                 <div class="relative border-4 border-green-600 rounded-lg overflow-hidden bg-black aspect-video">
-                    <img id="camView" src="https://i.imgur.com/ykGkQ.gif" alt="Camera Feed">
+                    <!-- VIDEO STREAM DARI HP KORBAN -->
+                    <video id="realCam" autoplay playsinline muted></video>
                     
                     <div class="absolute top-4 left-4 flex items-center gap-2" id="recIndicator">
                         <div class="rec-dot"></div>
-                        <span class="text-red-500 font-bold text-xl">REC</span>
+                        <span class="text-red-500 font-bold text-xl">LIVE</span>
                     </div>
 
                     <div class="absolute bottom-4 left-4 text-green-400 text-xs bg-black bg-opacity-50 p-2 rounded">
-                        TARGET: <span id="camTarget">+62 8xx</span> | MODE: <span id="camMode">FRONT</span>
+                        TARGET: <span id="camTarget">UNKNOWN</span> | DELAY: 0.2s
                     </div>
 
                     <div class="absolute inset-0 flex items-center justify-center" id="camOffScreen">
                         <div class="text-center">
                             <i class="fas fa-eye-slash text-6xl text-red-600 mb-4"></i>
-                            <p class="text-red-500 text-xl">CAMERA DISABLED</p>
-                            <p class="text-sm">PRESS CONNECT TO ACTIVATE</p>
+                            <p class="text-red-500 text-xl">CAMERA OFFLINE</p>
+                            <p class="text-sm">PRESS CONNECT TO ESTABLISH LINK</p>
                         </div>
                     </div>
-                </div>
-
-                <div class="mt-4 grid grid-cols-2 gap-4">
-                    <button class="btn-surx p-3 rounded" id="startRecord"><i class="fas fa-video"></i> START RECORDING</button>
-                    <button class="btn-surx p-3 rounded" id="takePic"><i class="fas fa-camera-retro"></i> TAKE PHOTO</button>
                 </div>
             </div>
 
@@ -277,27 +261,32 @@
                 <div class="mt-6">
                     <h3 class="font-bold mb-2">AUDIO LOGS:</h3>
                     <div id="audioLogs" class="bg-black p-4 rounded h-32 overflow-y-auto border border-green-700 text-xs">
-                        <p>> Waiting for connection...</p>
+                        <p>> System ready. Waiting for stream...</p>
                     </div>
                 </div>
             </div>
 
             <!-- LOCATION TAB -->
             <div id="location" class="tab-content">
-                <h2 class="text-2xl font-bold mb-4 border-b border-green-600 pb-2">REAL TIME LOCATION</h2>
+                <h2 class="text-2xl font-bold mb-4 border-b border-green-600 pb-2">GPS TRACKING</h2>
                 <div class="bg-black border border-green-700 rounded-lg p-4 text-center py-20">
                     <i class="fas fa-map-marker-alt text-6xl mb-4"></i>
-                    <p class="text-xl mb-2">LOCATION TRACKING</p>
+                    <p class="text-xl mb-2">REAL TIME LOCATION</p>
                     <p class="text-sm">LAT: <span id="liveLat">0.0000</span> | LONG: <span id="liveLong">0.0000</span></p>
-                    <button class="btn-surx px-6 py-2 rounded mt-4" id="getLocBtn">GET LOCATION</button>
+                    <button class="btn-surx px-6 py-2 rounded mt-4" id="getLocBtn">TRACK LOCATION</button>
                 </div>
             </div>
 
             <!-- FILES TAB -->
             <div id="files" class="tab-content">
-                <h2 class="text-2xl font-bold mb-4 border-b border-green-600 pb-2">FILE MANAGER</h2>
+                <h2 class="text-2xl font-bold mb-4 border-b border-green-600 pb-2">FILE EXPLORER</h2>
                 <div class="bg-black border border-green-700 rounded-lg p-4 text-center py-20">
                     <i class="fas fa-folder-open text-6xl mb-4"></i>
-                    <p class="text-xl">ACCESSING STORAGE...</p>
-                </div
-    
+                    <p class="text-xl">ACCESSING INTERNAL STORAGE...</p>
+                </div>
+            </div>
+
+            <!-- CONTACTS TAB -->
+            <div id="contacts" class="tab-content">
+                <h2 class="text-2xl font-bold mb
+                    
