@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>ZAKKY CAMERA</title>
+
   <style>
     body {
       background: black;
@@ -11,41 +12,62 @@
       text-align: center;
       padding: 20px;
     }
+
     .box {
       border: 2px solid #00ffcc;
       padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 0 15px #00ffcc;
+      box-shadow: 0 0 20px #00ffcc;
       margin-top: 40px;
     }
-    input, button {
-      padding: 10px;
+
+    input {
+      padding: 12px;
       border-radius: 10px;
       margin: 10px;
       border: none;
+      width: 80%;
+      text-align: center;
     }
+
     button {
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin: 10px;
+      border: none;
       background: #00ffcc;
       font-weight: bold;
+      cursor: pointer;
     }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
     video {
       width: 90%;
       margin-top: 20px;
       border: 2px solid #00ffcc;
       border-radius: 10px;
+      display: none;
     }
+
     #status {
       margin-top: 10px;
+      font-weight: bold;
     }
   </style>
 </head>
+
 <body>
 
 <div class="box">
-  <h1>ZAKKY CAMERA</h1>
+  <h1>ZAKKY CAMERA 🚀</h1>
 
-  <input id="wa" placeholder="Masukin No WA"><br>
+  <p>Masukin No WA:</p>
+  <input id="wa" placeholder="08xxxxxxxxxx">
 
+  <br>
   <button onclick="nyala()">ON</button>
   <button onclick="mati()">OFF</button>
 
@@ -55,8 +77,11 @@
 </div>
 
 <script>
+let streamAktif = null;
+
 async function nyala() {
   let nomor = document.getElementById("wa").value;
+
   if (!nomor) {
     alert("Masukin nomor dulu!");
     return;
@@ -64,31 +89,43 @@ async function nyala() {
 
   document.getElementById("status").innerText = "Menghubungkan...";
 
+  // Matikan kamera sebelumnya kalau ada
+  if (streamAktif) {
+    streamAktif.getTracks().forEach(track => track.stop());
+  }
+
   setTimeout(async () => {
     try {
-      let stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      document.getElementById("video").srcObject = stream;
-      document.getElementById("status").innerText = "📷 SIMULASI - Kamera aktif";
-    } catch {
-      document.getElementById("status").innerText = "Izin kamera ditolak";
+      streamAktif = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" } // kamera depan
+      });
+
+      let video = document.getElementById("video");
+      video.srcObject = streamAktif;
+      video.style.display = "block";
+
+      document.getElementById("status").innerText = "📷 SIMULASI - Kamera depan aktif";
+
+    } catch (err) {
+      document.getElementById("status").innerText = "❌ Izin kamera ditolak";
     }
-  }, 2000);
+  }, 1500);
 }
 
 function mati() {
   let video = document.getElementById("video");
-  let stream = video.srcObject;
 
-  if (stream) {
-    let tracks = stream.getTracks();
-    tracks.forEach(track => track.stop());
+  if (streamAktif) {
+    streamAktif.getTracks().forEach(track => track.stop());
+    streamAktif = null;
   }
 
   video.srcObject = null;
+  video.style.display = "none";
+
   document.getElementById("status").innerText = "Camera OFF";
 }
 </script>
 
 </body>
 </html>
-
