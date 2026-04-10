@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORION - LIVE CAM FEED</title>
+    <title>ORION - REAL FRONT CAM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -21,9 +21,9 @@
         .scanline {
             width: 100%;
             height: 100px;
-            z-index: 1;
-            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,255,0,0.2) 50%, rgba(0,0,0,0) 100%);
-            animation: scan 4s linear infinite;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,255,0,0.15) 50%, rgba(0,0,0,0) 100%);
+            animation: scan 3.5s linear infinite;
             position: absolute;
             pointer-events: none;
         }
@@ -44,34 +44,36 @@
         }
         
         .camera-feed {
-            background: #0a0a0a;
-            border: 2px solid #0f0;
-            box-shadow: 0 0 20px #0f0, inset 0 0 20px #0f0;
+            background: #000;
+            border: 3px solid #0f0;
+            box-shadow: 0 0 30px rgba(0,255,0,0.5), inset 0 0 30px rgba(0,255,0,0.3);
             position: relative;
             overflow: hidden;
         }
 
-        /* STYLE UNTUK VIDEO LIVE */
+        /* STYLE VIDEO REAL - KAMERA DEPAN */
         #liveVideo {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none; /* Awalnya tersembunyi */
-            filter: grayscale(20%) contrast(130%) brightness(95%);
+            display: none;
+            /* EFEK KAMERA DEPAN HP ASLI */
+            transform: scaleX(-1); /* Cermin */
+            filter: contrast(110%) brightness(95%) saturate(80%);
         }
 
         .recording-dot {
-            width: 15px;
-            height: 15px;
-            background-color: red;
+            width: 18px;
+            height: 18px;
+            background-color: #ff0000;
             border-radius: 50%;
             animation: pulse 1s infinite;
-            box-shadow: 0 0 10px red;
+            box-shadow: 0 0 15px #ff0000;
         }
 
         @keyframes pulse {
             0% { opacity: 1; }
-            50% { opacity: 0.3; }
+            50% { opacity: 0.2; }
             100% { opacity: 1; }
         }
         
@@ -95,7 +97,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #333;
+            background-color: #222;
             transition: .4s;
             border-radius: 34px;
             border: 2px solid #f00;
@@ -120,7 +122,7 @@
         
         input:checked + .slider {
             background-color: #0f0;
-            box-shadow: 0 0 20px #0f0;
+            box-shadow: 0 0 25px #0f0;
         }
         
         input:checked + .slider:before {
@@ -128,16 +130,56 @@
             content: "ON";
             background-color: #0f0;
         }
+
+        /* EFEK NOISE / GARIS GANGGUAN */
+        .noise-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.imgur.com/8dD0QjG.png');
+            opacity: 0.03;
+            z-index: 5;
+            pointer-events: none;
+            animation: noise 0.2s steps(8, end) infinite;
+        }
+
+        @keyframes noise {
+            0% { transform: translate(0, 0) }
+            10% { transform: translate(-5%, -10%) }
+            20% { transform: translate(-15%, 5%) }
+            30% { transform: translate(7%, -25%) }
+            40% { transform: translate(-5%, 25%) }
+            50% { transform: translate(-15%, 10%) }
+            60% { transform: translate(15%, 0%) }
+            70% { transform: translate(0%, 15%) }
+            80% { transform: translate(3%, 35%) }
+            90% { transform: translate(-10%, 10%) }
+            100% { transform: translate(0%, 0%) }
+        }
+
+        .time-code {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.5);
+            color: #0f0;
+            padding: 2px 8px;
+            font-size: 12px;
+            border: 1px solid #0f0;
+            z-index: 20;
+        }
     </style>
 </head>
 <body class="bg-black text-green-500">
     <div class="scanline"></div>
     
     <div class="container mx-auto px-4 h-screen flex flex-col justify-center items-center">
-        <header class="mb-8 text-center">
-            <h1 class="text-5xl font-black glitch mb-2 text-red-600">[ORION_1.0]</h1>
-            <h2 class="text-2xl text-green-400">LIVE CAMERA FEED v10.0</h2>
-            <p class="text-red-500 text-sm mt-2">REMOTE ACCESS PROTOCOL - OMEGA</p>
+        <header class="mb-6 text-center">
+            <h1 class="text-6xl font-black glitch mb-2 text-red-600">[ORION_1.0]</h1>
+            <h2 class="text-2xl text-green-400">REMOTE CAMERA EXPLOIT</h2>
+            <p class="text-red-500 text-sm mt-2">MODE: FRONT CAMERA - LIVE SIGNAL</p>
         </header>
 
         <main class="w-full max-w-4xl">
@@ -149,7 +191,7 @@
                     </h3>
                     
                     <div class="mb-6">
-                        <label class="block text-sm mb-2 text-gray-400">TARGET NUMBER (WA):</label>
+                        <label class="block text-sm mb-2 text-gray-400">TARGET NUMBER:</label>
                         <input type="text" id="targetNumber" placeholder="+62 8xx-xxxx-xxxx" 
                                class="w-full bg-black border-2 border-green-600 text-green-400 px-4 py-3 rounded focus:outline-none focus:border-red-500 text-xl tracking-widest">
                     </div>
@@ -170,45 +212,58 @@
                     </div>
                 </div>
 
-                <!-- LIVE CAMERA VIEW -->
+                <!-- LAYAR KAMERA -->
                 <div class="camera-feed rounded-lg aspect-video flex items-center justify-center relative">
                     
-                    <!-- VIDEO YANG AKAN MUNCUL -->
+                    <div class="noise-overlay"></div>
+                    
+                    <!-- VIDEO REAL ORANG - KAMERA DEPAN -->
                     <video id="liveVideo" autoplay loop muted playsinline>
-                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        <source src="https://cdn.pixabay.com/videos/2019/11/11/17-11-12-408_512.mp4" type="video/mp4">
                     </video>
 
-                    <!-- LAYAR AWAL (OFF) -->
+                    <div class="time-code" id="timeCode">00:00:00</div>
+
+                    <!-- LAYAR OFF -->
                     <div id="offScreen" class="text-center z-10">
-                        <i class="fas fa-eye-slash text-6xl text-red-600 mb-4"></i>
-                        <p class="text-red-500 text-xl font-bold">CONNECTION OFFLINE</p>
+                        <i class="fas fa-video-slash text-6xl text-red-600 mb-4"></i>
+                        <p class="text-red-500 text-xl font-bold">SIGNAL LOST</p>
+                        <p class="text-gray-500 text-sm">WAITING FOR CONNECTION...</p>
                     </div>
 
-                    <!-- INDIKATOR RECORDING -->
+                    <!-- INDIKATOR REC -->
                     <div id="recIndicator" class="absolute top-4 left-4 flex items-center gap-2" style="display: none;">
                         <div class="recording-dot"></div>
-                        <span class="text-red-500 font-bold text-lg">LIVE</span>
+                        <span class="text-red-500 font-bold text-xl">REC</span>
                     </div>
 
-                    <!-- INFO TARGET DI BAWAH VIDEO -->
+                    <!-- INFO TARGET -->
                     <div id="targetInfo" class="absolute bottom-4 left-4 text-green-400 text-xs" style="display: none;">
-                        TARGET: <span id="displayNumber">+62 8xx</span> | FRONT CAM
+                        TARGET: <span id="displayNumber">+62 8xx</span> | CAM: FRONT | QUALITY: HD
                     </div>
                 </div>
             </div>
 
             <!-- Logs -->
-            <div class="mt-8 bg-black border border-green-900 p-4 rounded h-32 overflow-hidden font-mono text-xs">
+            <div class="mt-6 bg-black border border-green-900 p-4 rounded h-32 overflow-hidden font-mono text-xs">
                 <div class="text-green-600 mb-1">[SYSTEM LOG]></div>
                 <div id="logArea" class="text-gray-500 space-y-1">
-                    <div>> Initializing Orion Protocol...</div>
-                    <div>> Connecting to Satellite Network...</div>
+                    <div>> System Initialized. Orion v1.0 Online.</div>
                 </div>
             </div>
         </main>
     </div>
 
     <script>
+        // JAM REAL TIME
+        function updateTime() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('id-ID');
+            document.getElementById('timeCode').innerText = time;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
         const powerSwitch = document.getElementById('powerSwitch');
         const statusText = document.getElementById('statusText');
         const progressBar = document.getElementById('progressBar');
@@ -221,20 +276,20 @@
         const targetInput = document.getElementById('targetNumber');
 
         const logs = [
-            "> Scanning target location...",
-            "> Bypassing WhatsApp Encryption...",
-            "> Accessing Front Camera...",
-            "> Injecting Spyware Module...",
-            "> Bypass Permission Accepted...",
-            "> Streaming Signal Captured...",
-            "> LOAD COMPLETE. DISPLAYING FEED..."
+            "> Connecting to WhatsApp Server...",
+            "> Retrieving Target IP Address...",
+            "> Bypassing Google Play Protect...",
+            "> Accessing Front Camera Module...",
+            "> Disabling Flash Light...",
+            "> Bypassing Permission Request...",
+            "> Connection Established. Signal Stable."
         ];
 
         powerSwitch.addEventListener('change', function() {
             const targetNum = targetInput.value;
             
             if(targetNum === "") {
-                alert("[ERROR] MASUKKAN NOMOR TARGET!");
+                alert("[ERROR] INPUT TARGET NUMBER!");
                 this.checked = false;
                 return;
             }
@@ -242,15 +297,14 @@
             displayNumber.innerText = targetNum;
 
             if(this.checked) {
-                // MODE ON - AKTIFKAN KAMERA
-                statusText.innerText = "CONNECTING...";
+                statusText.innerText = "HACKING...";
                 statusText.className = "text-yellow-400 text-sm mb-2 animate-pulse";
                 
                 let progress = 0;
                 let logIndex = 0;
                 
                 const interval = setInterval(() => {
-                    progress += Math.random() * 12;
+                    progress += Math.random() * 10;
                     if(progress >= 100) progress = 100;
                     progressBar.style.width = progress + '%';
 
@@ -265,7 +319,7 @@
                     if(progress === 100) {
                         clearInterval(interval);
                         
-                        // UBAH TAMPILAN JADI VIDEO LIVE
+                        // TAMPILKAN VIDEO NYATA
                         offScreen.style.display = "none";
                         liveVideo.style.display = "block";
                         recIndicator.style.display = "flex";
@@ -274,26 +328,12 @@
                         statusText.innerText = "LIVE";
                         statusText.className = "text-red-500 text-sm mb-2 font-bold animate-pulse";
                     }
-                }, 350);
+                }, 400);
 
             } else {
-                // MODE OFF
                 statusText.innerText = "DISCONNECTED";
                 statusText.className = "text-red-500 text-sm mb-2";
                 progressBar.style.width = '0%';
                 
-                // MATIKAN VIDEO
-                offScreen.style.display = "block";
-                liveVideo.style.display = "none";
-                recIndicator.style.display = "none";
-                targetInfo.style.display = "none";
-                
-                const div = document.createElement('div');
-                div.innerText = "> Connection terminated. Camera turned off.";
-                div.className = "text-red-400";
-                logArea.prepend(div);
-            }
-        });
-    </script>
-</body>
-</html>
+
+        
