@@ -1,66 +1,9 @@
-<!DOCTYPE html><html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZAKKY</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: black;
-      color: #00ffcc;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-    }
-    .box {
-      border: 2px solid #00ffcc;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px #00ffcc;
-    }
-    h1 {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 18px;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      background: #00ffcc;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #00cc99;
-    }
-  </style>
-</head>
-<body>
-  <div class="box">
-    <h1>ZAKKY</h1>
-    <p>Selamat datang di web ZAKKY 🚀</p>
-    <button onclick="showMessage()">Klik Aku</button>
-  </div>  <script>
-    function showMessage() {
-      alert("ZAKKY aktif bro 😎🔥");
-    }
-  </script></body>
-</html>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZAKKY CONTROL</title>
+  <title>ZAKKY</title>
   <style>
     body {
       background: black;
@@ -74,6 +17,7 @@
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 0 15px #00ffcc;
+      margin-top: 50px;
     }
     input {
       padding: 10px;
@@ -91,7 +35,7 @@
       font-weight: bold;
       cursor: pointer;
     }
-    video, img {
+    img {
       margin-top: 20px;
       width: 90%;
       border-radius: 10px;
@@ -103,6 +47,7 @@
 
   <div class="box">
     <h1>ZAKKY CAMERA</h1>
+    <p>Selamat datang di web ZAKKY 🚀</p>
 
     <p>Masukin No WA:</p>
     <input type="text" placeholder="08xxxxxxxxxx">
@@ -114,9 +59,7 @@
 
     <br>
 
-    <!-- Kamera simulasi -->
     <img id="cam" src="https://via.placeholder.com/300x200?text=Camera+OFF">
-
   </div>
 
   <script>
