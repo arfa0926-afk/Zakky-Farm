@@ -2,8 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZAKKY</title>
+  <title>ZAKKY CAMERA</title>
   <style>
     body {
       background: black;
@@ -17,64 +16,78 @@
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 0 15px #00ffcc;
-      margin-top: 50px;
+      margin-top: 40px;
     }
-    input {
+    input, button {
       padding: 10px;
       border-radius: 10px;
+      margin: 10px;
       border: none;
-      width: 80%;
-      margin-top: 10px;
     }
     button {
-      margin: 10px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
       background: #00ffcc;
       font-weight: bold;
-      cursor: pointer;
     }
-    img {
-      margin-top: 20px;
+    video {
       width: 90%;
-      border-radius: 10px;
+      margin-top: 20px;
       border: 2px solid #00ffcc;
+      border-radius: 10px;
+    }
+    #status {
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-  <div class="box">
-    <h1>ZAKKY CAMERA</h1>
-    <p>Selamat datang di web ZAKKY 🚀</p>
+<div class="box">
+  <h1>ZAKKY CAMERA</h1>
 
-    <p>Masukin No WA:</p>
-    <input type="text" placeholder="08xxxxxxxxxx">
+  <input id="wa" placeholder="Masukin No WA"><br>
 
-    <br>
+  <button onclick="nyala()">ON</button>
+  <button onclick="mati()">OFF</button>
 
-    <button onclick="nyala()">ON</button>
-    <button onclick="mati()">OFF</button>
+  <p id="status">Camera OFF</p>
 
-    <br>
+  <video id="video" autoplay playsinline></video>
+</div>
 
-    <img id="cam" src="https://via.placeholder.com/300x200?text=Camera+OFF">
-  </div>
+<script>
+async function nyala() {
+  let nomor = document.getElementById("wa").value;
+  if (!nomor) {
+    alert("Masukin nomor dulu!");
+    return;
+  }
 
-  <script>
-    function nyala() {
-      document.getElementById("cam").src =
-        "https://via.placeholder.com/300x200?text=Camera+ON";
-      alert("Kamera berhasil dinyalakan 📷");
+  document.getElementById("status").innerText = "Menghubungkan...";
+
+  setTimeout(async () => {
+    try {
+      let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      document.getElementById("video").srcObject = stream;
+      document.getElementById("status").innerText = "📷 SIMULASI - Kamera aktif";
+    } catch {
+      document.getElementById("status").innerText = "Izin kamera ditolak";
     }
+  }, 2000);
+}
 
-    function mati() {
-      document.getElementById("cam").src =
-        "https://via.placeholder.com/300x200?text=Camera+OFF";
-      alert("Kamera dimatikan ❌");
-    }
-  </script>
+function mati() {
+  let video = document.getElementById("video");
+  let stream = video.srcObject;
+
+  if (stream) {
+    let tracks = stream.getTracks();
+    tracks.forEach(track => track.stop());
+  }
+
+  video.srcObject = null;
+  document.getElementById("status").innerText = "Camera OFF";
+}
+</script>
 
 </body>
 </html>
