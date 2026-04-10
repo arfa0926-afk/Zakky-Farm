@@ -1,62 +1,44 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>ZAKKY CAMERA</title>
+<meta charset="UTF-8">
+<title>ZAKKY CAMERA</title>
 
-  <style>
-    body {
-      background: black;
-      color: #00ffcc;
-      font-family: Arial;
-      text-align: center;
-      padding: 20px;
-    }
+<style>
+body {
+  background: black;
+  color: #00ffcc;
+  font-family: Arial;
+  text-align: center;
+}
 
-    .box {
-      border: 2px solid #00ffcc;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 20px #00ffcc;
-      margin-top: 40px;
-    }
+.box {
+  border: 2px solid #00ffcc;
+  margin-top: 40px;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00ffcc;
+}
 
-    input {
-      padding: 12px;
-      border-radius: 10px;
-      margin: 10px;
-      border: none;
-      width: 80%;
-      text-align: center;
-    }
+input, button {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+}
 
-    button {
-      padding: 10px 20px;
-      border-radius: 10px;
-      margin: 10px;
-      border: none;
-      background: #00ffcc;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button {
+  background: #00ffcc;
+  font-weight: bold;
+}
 
-    button:hover {
-      opacity: 0.8;
-    }
-
-    video {
-      width: 90%;
-      margin-top: 20px;
-      border: 2px solid #00ffcc;
-      border-radius: 10px;
-      display: none;
-    }
-
-    #status {
-      margin-top: 10px;
-      font-weight: bold;
-    }
-  </style>
+video {
+  width: 90%;
+  margin-top: 20px;
+  border-radius: 10px;
+  display: none;
+}
+</style>
 </head>
 
 <body>
@@ -64,10 +46,8 @@
 <div class="box">
   <h1>ZAKKY CAMERA 🚀</h1>
 
-  <p>Masukin No WA:</p>
-  <input id="wa" placeholder="08xxxxxxxxxx">
+  <input id="wa" placeholder="Masukin No WA"><br>
 
-  <br>
   <button onclick="nyala()">ON</button>
   <button onclick="mati()">OFF</button>
 
@@ -77,7 +57,7 @@
 </div>
 
 <script>
-let streamAktif = null;
+let stream = null;
 
 async function nyala() {
   let nomor = document.getElementById("wa").value;
@@ -87,42 +67,39 @@ async function nyala() {
     return;
   }
 
-  document.getElementById("status").innerText = "Menghubungkan...";
+  let status = document.getElementById("status");
 
-  // Matikan kamera sebelumnya kalau ada
-  if (streamAktif) {
-    streamAktif.getTracks().forEach(track => track.stop());
-  }
+  status.innerText = "📡 Menghubungkan ke " + nomor + "...";
+
+  setTimeout(() => {
+    status.innerText = "🔍 Mencari perangkat target...";
+  }, 1000);
 
   setTimeout(async () => {
+    status.innerText = "📶 Terhubung (SIMULASI)";
+    
     try {
-      streamAktif = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" } // kamera depan
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" }
       });
 
       let video = document.getElementById("video");
-      video.srcObject = streamAktif;
+      video.srcObject = stream;
       video.style.display = "block";
 
-      document.getElementById("status").innerText = "📷 SIMULASI - Kamera depan aktif";
-
-    } catch (err) {
-      document.getElementById("status").innerText = "❌ Izin kamera ditolak";
+      status.innerText = "📷 Kamera target aktif (SIMULASI)";
+    } catch {
+      status.innerText = "❌ Izin kamera ditolak";
     }
-  }, 1500);
+  }, 2500);
 }
 
 function mati() {
-  let video = document.getElementById("video");
-
-  if (streamAktif) {
-    streamAktif.getTracks().forEach(track => track.stop());
-    streamAktif = null;
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
   }
 
-  video.srcObject = null;
-  video.style.display = "none";
-
+  document.getElementById("video").style.display = "none";
   document.getElementById("status").innerText = "Camera OFF";
 }
 </script>
