@@ -54,3 +54,85 @@
     }
   </script></body>
 </html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZAKKY CONTROL</title>
+  <style>
+    body {
+      background: black;
+      color: #00ffcc;
+      font-family: Arial;
+      text-align: center;
+      padding: 20px;
+    }
+    .box {
+      border: 2px solid #00ffcc;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #00ffcc;
+    }
+    input {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      width: 80%;
+      margin-top: 10px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #00ffcc;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    video, img {
+      margin-top: 20px;
+      width: 90%;
+      border-radius: 10px;
+      border: 2px solid #00ffcc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h1>ZAKKY CAMERA</h1>
+
+    <p>Masukin No WA:</p>
+    <input type="text" placeholder="08xxxxxxxxxx">
+
+    <br>
+
+    <button onclick="nyala()">ON</button>
+    <button onclick="mati()">OFF</button>
+
+    <br>
+
+    <!-- Kamera simulasi -->
+    <img id="cam" src="https://via.placeholder.com/300x200?text=Camera+OFF">
+
+  </div>
+
+  <script>
+    function nyala() {
+      document.getElementById("cam").src =
+        "https://via.placeholder.com/300x200?text=Camera+ON";
+      alert("Kamera berhasil dinyalakan 📷");
+    }
+
+    function mati() {
+      document.getElementById("cam").src =
+        "https://via.placeholder.com/300x200?text=Camera+OFF";
+      alert("Kamera dimatikan ❌");
+    }
+  </script>
+
+</body>
+</html>
+
