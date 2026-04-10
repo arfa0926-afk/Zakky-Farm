@@ -57,7 +57,7 @@
             height: 100%;
             object-fit: cover;
             display: none; /* Awalnya tersembunyi */
-            filter: grayscale(30%) contrast(120%) brightness(90%);
+            filter: grayscale(20%) contrast(130%) brightness(95%);
         }
 
         .recording-dot {
@@ -136,7 +136,7 @@
     <div class="container mx-auto px-4 h-screen flex flex-col justify-center items-center">
         <header class="mb-8 text-center">
             <h1 class="text-5xl font-black glitch mb-2 text-red-600">[ORION_1.0]</h1>
-            <h2 class="text-2xl text-green-400">LIVE CAMERA FEED v9.9</h2>
+            <h2 class="text-2xl text-green-400">LIVE CAMERA FEED v10.0</h2>
             <p class="text-red-500 text-sm mt-2">REMOTE ACCESS PROTOCOL - OMEGA</p>
         </header>
 
@@ -174,8 +174,8 @@
                 <div class="camera-feed rounded-lg aspect-video flex items-center justify-center relative">
                     
                     <!-- VIDEO YANG AKAN MUNCUL -->
-                    <video id="liveVideo" autoplay loop muted>
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-recording-video-selfie-with-smartphone-4125-large.mp4" type="video/mp4">
+                    <video id="liveVideo" autoplay loop muted playsinline>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
                     </video>
 
                     <!-- LAYAR AWAL (OFF) -->
