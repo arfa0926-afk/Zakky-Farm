@@ -1,108 +1,270 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>ZAKKY CAMERA</title>
-
-<style>
-body {
-  background: black;
-  color: #00ffcc;
-  font-family: Arial;
-  text-align: center;
-}
-
-.box {
-  border: 2px solid #00ffcc;
-  margin-top: 40px;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 0 20px #00ffcc;
-}
-
-input, button {
-  padding: 10px;
-  margin: 10px;
-  border-radius: 10px;
-  border: none;
-}
-
-button {
-  background: #00ffcc;
-  font-weight: bold;
-}
-
-video {
-  width: 90%;
-  margin-top: 20px;
-  border-radius: 10px;
-  display: none;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORION - CAM HACK TOOL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            font-family: 'Orbitron', monospace;
+        }
+        
+        body {
+            background: #000;
+            overflow: hidden;
+        }
+        
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 1;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,255,0,0.2) 50%, rgba(0,0,0,0) 100%);
+            animation: scan 4s linear infinite;
+            position: absolute;
+            pointer-events: none;
+        }
+        
+        @keyframes scan {
+            0% { top: -100px; }
+            100% { top: 100%; }
+        }
+        
+        .glitch {
+            animation: glitch 1s linear infinite;
+        }
+        
+        @keyframes glitch {
+            2%,64%{ transform: translate(2px,0) skew(0deg); }
+            4%,60%{ transform: translate(-2px,0) skew(0deg); }
+            62%{ transform: translate(0,0) skew(5deg); }
+        }
+        
+        .camera-feed {
+            background: #0a0a0a;
+            border: 2px solid #0f0;
+            box-shadow: 0 0 20px #0f0, inset 0 0 20px #0f0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .static {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("https://picsum.photos/id/237/600/400");
+            background-size: cover;
+            filter: grayscale(100%) contrast(150%);
+            opacity: 0.2;
+            mix-blend-mode: screen;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 120px;
+            height: 60px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 34px;
+            border: 2px solid #f00;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "OFF";
+            height: 44px;
+            width: 44px;
+            left: 6px;
+            bottom: 6px;
+            background-color: #ff0000;
+            color: white;
+            text-align: center;
+            line-height: 44px;
+            font-size: 10px;
+            font-weight: bold;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #0f0;
+            box-shadow: 0 0 20px #0f0;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(56px);
+            content: "ON";
+            background-color: #0f0;
+        }
+        
+        #loading-text::after {
+            content: '';
+            animation: dots 1s steps(5, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+    </style>
 </head>
-
-<body>
-
-<div class="box">
-  <h1>ZAKKY CAMERA 🚀</h1>
-
-  <input id="wa" placeholder="Masukin No WA"><br>
-
-  <button onclick="nyala()">ON</button>
-  <button onclick="mati()">OFF</button>
-
-  <p id="status">Camera OFF</p>
-
-  <video id="video" autoplay playsinline></video>
-</div>
-
-<script>
-let stream = null;
-
-async function nyala() {
-  let nomor = document.getElementById("wa").value;
-
-  if (!nomor) {
-    alert("Masukin nomor dulu!");
-    return;
-  }
-
-  let status = document.getElementById("status");
-
-  status.innerText = "📡 Menghubungkan ke " + nomor + "...";
-
-  setTimeout(() => {
-    status.innerText = "🔍 Mencari perangkat target...";
-  }, 1000);
-
-  setTimeout(async () => {
-    status.innerText = "📶 Terhubung (SIMULASI)";
+<body class="bg-black text-green-500">
+    <div class="scanline"></div>
     
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" }
-      });
+    <div class="container mx-auto px-4 h-screen flex flex-col justify-center items-center">
+        <header class="mb-8 text-center">
+            <h1 class="text-5xl font-black glitch mb-2 text-red-600">[ORION_1.0]</h1>
+            <h2 class="text-2xl text-green-400">REMOTE CAMERA ACCESS v9.9</h2>
+            <p class="text-red-500 text-sm mt-2">UNAUTHORIZED ACCESS PROTOCOL - OMEGA</p>
+        </header>
 
-      let video = document.getElementById("video");
-      video.srcObject = stream;
-      video.style.display = "block";
+        <main class="w-full max-w-4xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Control Panel -->
+                <div class="bg-gray-900 p-6 border-2 border-green-700 rounded-lg shadow-2xl">
+                    <h3 class="text-xl font-bold mb-4 border-b border-green-700 pb-2">
+                        <i class="fas fa-microchip mr-2"></i>CONTROL PANEL
+                    </h3>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm mb-2 text-gray-400">TARGET NUMBER (WHATSAPP):</label>
+                        <input type="text" id="targetNumber" placeholder="+62 8xx-xxxx-xxxx" 
+                               class="w-full bg-black border-2 border-green-600 text-green-400 px-4 py-3 rounded focus:outline-none focus:border-red-500 text-xl tracking-widest">
+                    </div>
 
-      status.innerText = "📷 Kamera target aktif (SIMULASI)";
-    } catch {
-      status.innerText = "❌ Izin kamera ditolak";
-    }
-  }, 2500);
-}
+                    <div class="flex items-center justify-between bg-black p-4 rounded mb-6 border border-gray-800">
+                        <span class="text-lg">CAMERA STATUS:</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="powerSwitch">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
 
-function mati() {
-  if (stream) {
-    stream.getTracks().forEach(track => track.stop());
-  }
+                    <div class="text-center">
+                        <div id="statusText" class="text-yellow-500 text-sm mb-2">STANDBY</div>
+                        <div class="w-full bg-gray-800 rounded-full h-2.5">
+                            <div id="progressBar" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
 
-  document.getElementById("video").style.display = "none";
-  document.getElementById("status").innerText = "Camera OFF";
-}
-</script>
+                <!-- Camera View -->
+                <div class="camera-feed rounded-lg aspect-video flex items-center justify-center relative">
+                    <div class="static"></div>
+                    <div id="feedContent" class="text-center z-10">
+                        <i class="fas fa-eye-slash text-6xl text-red-600 mb-4"></i>
+                        <p class="text-red-500 text-xl font-bold" id="loading-text">CONNECTION OFFLINE</p>
+                        <p class="text-gray-600 text-sm mt-2">AWAITING COMMAND...</p>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Logs -->
+            <div class="mt-8 bg-black border border-green-900 p-4 rounded h-32 overflow-hidden font-mono text-xs">
+                <div class="text-green-600 mb-1">[SYSTEM]></div>
+                <div id="logArea" class="text-gray-500 space-y-1">
+                    <div>> Initializing Orion Protocol...</div>
+                    <div>> Connecting to Satellite Network...</div>
+                    <div>> Encryption Key Generated: ******</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const powerSwitch = document.getElementById('powerSwitch');
+        const statusText = document.getElementById('statusText');
+        const progressBar = document.getElementById('progressBar');
+        const feedContent = document.getElementById('feedContent');
+        const logArea = document.getElementById('logArea');
+        const targetInput = document.getElementById('targetNumber');
+
+        const logs = [
+            "> Scanning target location...",
+            "> Bypassing Firewall... [OK]",
+            "> Accessing WhatsApp Server...",
+            "> Injecting payload...",
+            "> Establishing backdoor connection...",
+            "> Requesting Camera Permission...",
+            "> Access Granted. Booting feed..."
+        ];
+
+        powerSwitch.addEventListener('change', function() {
+            const targetNum = targetInput.value;
+            
+            if(targetNum === "") {
+                alert("[ERROR] INPUT TARGET NUMBER FIRST!");
+                this.checked = false;
+                return;
+            }
+
+            if(this.checked) {
+                // TURN ON
+                statusText.innerText = "CONNECTING";
+                statusText.className = "text-yellow-400 text-sm mb-2 animate-pulse";
+                feedContent.innerHTML = '<i class="fas fa-spinner fa-spin text-6xl text-yellow-400 mb-4"></i><p class="text-yellow-400 text-xl font-bold" id="loading-text">UPLOADING VIRUS</p>';
+                
+                let progress = 0;
+                let logIndex = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if(progress >= 100) progress = 100;
+                    progressBar.style.width = progress + '%';
+
+                    if(logIndex < logs.length) {
+                        const div = document.createElement('div');
+                        div.innerText = logs[logIndex];
+                        div.className = "text-green-400";
+                        logArea.prepend(div);
+                        logIndex++;
+                    }
+
+                    if(progress === 100) {
+                        clearInterval(interval);
+                        statusText.innerText = "LIVE";
+                        statusText.className = "text-red-500 text-sm mb-2 font-bold animate-pulse";
+                        feedContent.innerHTML = `
+                            <i class="fas fa-video text-6xl text-red-500 mb-4"></i>
+                            <p class="text-red-500 text-2xl font-bold">STREAMING ACTIVE</p>
+                            <p class="text-green-400 text-sm mt-2">TARGET: ${targetNum}</p>
+                        `;
+                    }
+                }, 400);
+
+            } else {
+                // TURN OFF
+                statusText.innerText = "DISCONNECTED";
+                statusText.className = "text-red-500 text-sm mb-2";
+                progressBar.style.width = '0%';
+                feedContent.innerHTML = '<i class="fas fa-eye-slash text-6xl text-red-600 mb-4"></i><p class="text-red-500 text-xl font-bold">CONNECTION OFFLINE</p>';
+                
+                const div = document.createElement('div');
+                div.innerText = "> Connection terminated by user.";
+                div.className = "text-red-400";
+                logArea.prepend(div);
+            }
+        });
+    </script>
 </body>
 </html>
